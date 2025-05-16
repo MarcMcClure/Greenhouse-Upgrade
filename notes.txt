@@ -1,0 +1,55 @@
+5/15/2025
+okay so i need the following for the MVP
+
+Arduino Nano
+DS18B20 Temp Sensor
+12V→5V Buck Converter
+assorted resisters
+assorted LEDs
+Bread Board
+jumpers
+
+logic
+
+PLC inputs
+	sensor bits
+		upper temp high
+		upper temp low
+		lower temp high
+		lower temp low
+		humidity high
+		humidity low
+	buttons	(for version 1.2)
+		manual mode button
+		open vent button
+		close vent button
+		circulation fan button
+		heater button
+	safety
+		vent open limit switch (Unpressed = 1, Pressed = 0)
+		vent closed limit switch (Unpressed = 1, Pressed = 0)
+		battery low
+
+PLC intermediates
+	vent should be open
+
+PLC outputs
+	vent motor (forward, reverse, or off)
+	circulation fan (on, off)
+	heater (on, off)
+
+PLC Logic
+	(upper temp high ∧ lower temp high) ∨ (humidity high ∧ ¬ upper temp low ∧ ¬ lower temp low)) -> vent should be open
+	vent open limit switch ∧ vent should be open -> vent motor forward
+	vent closed limit switch ∧ ¬ vent should be open -> vent motor reverse
+
+	(upper temp high ∧ lower temp low) ∨ (upper temp low ∧ lower temp high) -> big temp diff
+	big temp diff -> circulation fan on
+
+	upper temp low ∧ lower temp low ∧ vent closed limit switch ∧ ¬ battery low  -> heater on
+
+5/16/2025
+instructions on getting vs code set up for Arduino and ESP32-DevKitC
+https://docs.platformio.org/en/latest/tutorials/espressif32/arduino_debugging_unit_testing.html
+
+I have not touched a microcontroler in a couple years so the goal for v0.1 is just to get the indicater LED to flash
