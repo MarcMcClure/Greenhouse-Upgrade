@@ -13,7 +13,7 @@
 void setUpLED();
 void lightRedLED();
 void lightBlueLED();
-void swapLED();
+void lightLEDAcordingToTemp();
 void printTempToUSB();
 
 // initializing the temp sensor
@@ -21,7 +21,7 @@ OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
 // Track time for each event
-unsigned long lastLEDSwapTime = 0;
+unsigned long lastLEDUpdate = 0;
 unsigned long lastTempReadTime = 0;
 
 void setup()
@@ -36,18 +36,20 @@ void loop()
 {
   unsigned long currentTime = millis();
 
-  //swap LEDs if more than a second and a half has elapsed since the last swap
-  if (currentTime - lastLEDSwapTime >= 1500){
-    swapLED();
-    lastLEDSwapTime = currentTime;
-  }
-
+  //print temp is it had been over 1 second since the last time the temp was printed
   if (currentTime - lastTempReadTime >= 1000){
     printTempToUSB();
     lastTempReadTime = currentTime;
   }
-}
 
+  //update LEDs, red or blue, every 0.1s
+  if (currentTime - lastLEDUpdate >= 100){
+    lightLEDAcordingToTemp();
+    lastLEDUpdate = currentTime;
+  }
+
+
+}
 
 void setUpLED(){
   pinMode(LED_BLUE, OUTPUT);
@@ -66,10 +68,12 @@ void lightBlueLED(){
   digitalWrite(LED_BLUE, HIGH);
 }
 
-// function to swap whigh LED is lit
-void swapLED()
+// lights red LED if temp is over 32C else lights blue.
+void lightLEDAcordingToTemp()
 {
-  if(digitalRead(LED_BLUE) == HIGH) lightRedLED();
+  sensors.requestTemperatures();
+  float tempC = sensors.getTempCByIndex(0);
+  if(tempC > 32) lightRedLED();
   else lightBlueLED();
 }
 

@@ -1,7 +1,7 @@
 5/15/2025
 okay so i need the following for the MVP
 
-Arduino Nano
+ESP32-WROOM-32/ESP32 DevKit v1
 DS18B20 Temp Sensor
 12V→5V Buck Converter
 assorted resisters
@@ -69,4 +69,4 @@ I'm using a 5.1K ohm instead of a 4.7 K Ohm resister to connect the data because
 
 Im having to use a jumper (the brown one) to connect the 3.3v to the power rail because i cant find a second breadboard.
 
-You'll need the libraries OneWire and DallasTemperature
+You'll need the libraries OneWire and DallasTemperature to get the temp sensor working
