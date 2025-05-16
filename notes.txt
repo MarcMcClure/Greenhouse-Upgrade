@@ -52,4 +52,10 @@ PLC Logic
 instructions on getting vs code set up for Arduino and ESP32-DevKitC
 https://docs.platformio.org/en/latest/tutorials/espressif32/arduino_debugging_unit_testing.html
 
+I needed to manually download and install the Silicon Labs CP210x USB to UART Bridge VCP driver to get Windows to recognize the device.
+When you create the project the platform is espressif32 and the framework is arduino
+after that just copy the main.cpp file and run per docs
 I have not touched a microcontroler in a couple years so the goal for v0.1 is just to get the indicater LED to flash
+
+5/16/2025
+The goal for v0.2 is to get the arduino to do a caluclationa and then return print the output to the tak moniter via the USB
