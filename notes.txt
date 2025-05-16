@@ -58,4 +58,15 @@ after that just copy the main.cpp file and run per docs
 I have not touched a microcontroler in a couple years so the goal for v0.1 is just to get the indicater LED to flash
 
 5/16/2025
-The goal for v0.2 is to get the arduino to do a caluclationa and then return print the output to the tak moniter via the USB
+The goal for v0.2 is to get the arduino to do a caluclationa and then  print the output to the tak moniter via the USB
+
+The goal for v0.3 is to get the temp sensor working. 
+	It will light a red LED when i warm the sensor with my hand and a blue LED when it is closed
+	It will print the sensor reading to the output to the task moniter via the USB
+
+I'm using a 5.1K ohm instead of a 4.7 K Ohm resister to connect the data because I have it on hand. It's technically in spec but not recomended. 
+	I got an extra long cabel so the higher resistivity may be an issue in which case I will have to do some resister math. We will see.
+
+Im having to use a jumper (the brown one) to connect the 3.3v to the power rail because i cant find a second breadboard.
+
+You'll need the libraries OneWire and DallasTemperature

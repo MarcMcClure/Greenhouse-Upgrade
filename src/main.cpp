@@ -1,60 +1,82 @@
 /**
- * Blink
- *
- * Turns on an LED on for one second,
- * then off for one second, repeatedly.
+ * lights red LED when sensor is warm, blue when its cold, and prints temp to serial moniter every second
  */
 #include "Arduino.h"
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
-// Set LED_BUILTIN if it is not defined by Arduino framework
-#define LED_BUILTIN 2
+// Define GPIO pins
+#define LED_BLUE 2
+#define LED_RED 17
+#define ONE_WIRE_BUS 19 //temp sensor
 
-void testCalculationAndOutput();
-void flashLED();
+void setUpLED();
+void lightRedLED();
+void lightBlueLED();
+void swapLED();
+void printTempToUSB();
+
+// initializing the temp sensor
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+
+// Track time for each event
+unsigned long lastLEDSwapTime = 0;
+unsigned long lastTempReadTime = 0;
 
 void setup()
 {
-  testCalculationAndOutput();
+  setUpLED();
+  Serial.begin(9600);
+  sensors.begin();
 }
 
 
 void loop()
 {
+  unsigned long currentTime = millis();
 
+  //swap LEDs if more than a second and a half has elapsed since the last swap
+  if (currentTime - lastLEDSwapTime >= 1500){
+    swapLED();
+    lastLEDSwapTime = currentTime;
+  }
+
+  if (currentTime - lastTempReadTime >= 1000){
+    printTempToUSB();
+    lastTempReadTime = currentTime;
+  }
 }
 
-// do a caluclation then print the variables and output
-void testCalculationAndOutput()
-{
-  //wait for USB port to connect
-  Serial.begin(9600); //set to default moniter speed
-  while (!Serial);
 
-  int a = 7;
-  int b = 5;
-  int result = a + b;
-
-  Serial.println("Simple Calculation:");
-  Serial.print(a);
-  Serial.print(" + ");
-  Serial.print(b);
-  Serial.print(" = ");
-  Serial.println(result);
+void setUpLED(){
+  pinMode(LED_BLUE, OUTPUT);
+  pinMode(LED_RED, OUTPUT);
 }
 
-// function to flash an LED
-// setup by initializeing LED digital pin as an output with pinMode(LED_BUILTIN, OUTPUT);
-void flashLED()
+//lights the red LED and shuts off the blue
+void lightRedLED(){
+  digitalWrite(LED_BLUE, LOW);
+  digitalWrite(LED_RED, HIGH);
+}
+
+//lights the blue LED and shuts off the red
+void lightBlueLED(){
+  digitalWrite(LED_RED, LOW);
+  digitalWrite(LED_BLUE, HIGH);
+}
+
+// function to swap whigh LED is lit
+void swapLED()
 {
-  // turn the LED on (HIGH is the voltage level)
-  digitalWrite(LED_BUILTIN, HIGH);
+  if(digitalRead(LED_BLUE) == HIGH) lightRedLED();
+  else lightBlueLED();
+}
 
-  // wait for a second
-  delay(1000);
-
-  // turn the LED off by making the voltage LOW
-  digitalWrite(LED_BUILTIN, LOW);
-
-   // wait for a second
-  delay(1000);
+void printTempToUSB(){
+    sensors.requestTemperatures();
+    float tempC = sensors.getTempCByIndex(0);
+    Serial.print("Temp: ");
+    Serial.print(tempC);
+    Serial.println(" °C");
 }
