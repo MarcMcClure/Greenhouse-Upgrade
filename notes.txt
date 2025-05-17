@@ -69,4 +69,16 @@ I'm using a 5.1K ohm instead of a 4.7 K Ohm resister to connect the data because
 
 Im having to use a jumper (the brown one) to connect the 3.3v to the power rail because i cant find a second breadboard.
 
-You'll need the libraries OneWire and DallasTemperature to get the temp sensor working
+I cheeped out and didnt get the breakout board for the DS18B20 Temp Sensor and boy was that a mistake. stripping and winning the wires was 
+	a pain in the ass but shome boards are on their way.
+
+You'll need the libraries OneWire and DallasTemperature to get the temp sensor working.
+
+5/17/2025
+
+The goal for v0.4 is to get the wifi and a a slimmed down REST api working which had 3 methods. this will be the v1.0 api.
+	GET "/data" which returns a json like { "temp_c": 21.69 }
+	GET "/settings" which returns a json like {"updateIntervalMs": 1000,"criticalTempC": 32.00}
+	PUT "/settings" with params like "?interval=2000&criticalTempC=30"
+
+TODO: I need to set up unit tests for get data, get settings, put setting, and a bad api call.
