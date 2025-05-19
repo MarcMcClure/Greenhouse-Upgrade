@@ -82,3 +82,19 @@ The goal for v0.4 is to get the wifi and a a slimmed down REST api working which
 	PUT "/settings" with params like "?interval=2000&criticalTempC=30"
 
 TODO: I need to set up unit tests for get data, get settings, put setting, and a bad api call.
+
+5/18/2025
+
+v1.0 added 2 more temp sensors so i can moniter temp at the top of the greenhouse, bottom of the greenhouse, and outside. 
+	deployed outside over night on an existing 12v solar system I had lying around with a buck converter.
+	LEDs now indicated based on the average of the 3 sensors.
+
+TODO: clean up wireing
+TODO: add shades/hoods for temp sensors so they are not affected by direct sunlight
+TODO: add limits on settings ranges
+TODO: break LED controle logic and sensor reading logic into diffrent files
+TODO: rewire and reprogram LEDs so they convay usefull and meaningfull information. 
+TODO: clean up comments
+TODO: switch to freedom units
+TODO: build a front end.
+TODO: update readme

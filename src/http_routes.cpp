@@ -20,8 +20,20 @@ void registerRoutes(WebServer& server) {
 }
 
 // handles GET /data endpoint
+
 void handleGetData(WebServer& server) {
-  String json = "{ \"temp_c\": " + String(currentTempC, 2) + " }";
+  String json = "{ \"temps_c\": {";
+
+  for (int i = 0; i < currentTempSensorCount && i < MAX_TEMP_SENSORS; i++) {
+    String id = addressToString(sensorAddresses[i]);
+    json += "\"" + id + "\": ";
+    json += isnan(currentTemperaturesC[i]) ? "null" : String(currentTemperaturesC[i]);
+    if (i < currentTempSensorCount - 1 && i < MAX_TEMP_SENSORS - 1) {
+      json += ", ";
+    }
+  }
+
+  json += "} }";
   server.send(200, "application/json", json);
 }
 
