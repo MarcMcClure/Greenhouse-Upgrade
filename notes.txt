@@ -98,3 +98,12 @@ TODO: clean up comments
 TODO: switch to freedom units
 TODO: build a front end.
 TODO: update readme
+
+5/22/2025
+
+TODO: add protection for low battery.
+
+v 1.1 added a fan that sho0ld help with tempreture stratification.
+	GET "/data" which returns a json like { "temps_c": { "top": 20.81, "bottom": 7.62, "outside": 10.50 } }
+	GET "/settings" which returns a json like {"updateIntervalMs": 1000,"hotTempC": 25.00,"coldTempC": 10.00,"runFanTempDiffC": 3.00}
+	PUT "/settings" with params like "?interval=2000&hotTempC=26&coldTempC=9&runFanTempDiffC=2"

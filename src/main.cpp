@@ -18,6 +18,8 @@ void setup()
 {
   Serial.begin(9600);
   setUpLED();
+  setUpFan();
+  setUpVent();
   startWiFi();
   initTemperatureSensor();
 
@@ -35,6 +37,9 @@ void loop()
     updateTemperature();
     printTempToUSB();
     lightLEDAcordingToTemp();
+    controlFanByStratification();
+    // controlVentByTemp();
+
     lastTempReadTime = currentTime;
   }
 

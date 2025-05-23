@@ -2,11 +2,16 @@
 
 void initTemperatureSensor();
 void setUpLED();
+void setUpFan();
+void setUpVent();
 void updateTemperature();
 void printTempToUSB();
-void lightRedLED();
-void lightBlueLED();
 void lightLEDAcordingToTemp();
+void controlFanByStratification();
+void controlVentByTemp();
+void extendVent();  
+void retractVent();
+void stopVent();
 String addressToString(DeviceAddress deviceAddress);
 
 #define MAX_TEMP_SENSORS 3
@@ -14,6 +19,8 @@ String addressToString(DeviceAddress deviceAddress);
 extern int currentTempSensorCount;
 extern DeviceAddress sensorAddresses[MAX_TEMP_SENSORS];
 extern float currentTemperaturesC[MAX_TEMP_SENSORS];
-extern float criticalTempC;
+extern float hotTempC;
+extern float coldTempC;
+extern float runFanTempDiffC;
 extern unsigned long updateIntervalMs;
 extern unsigned long lastTempReadTime;

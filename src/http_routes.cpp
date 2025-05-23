@@ -41,12 +41,13 @@ void handleGetData(WebServer& server) {
 void handleGetSettings(WebServer& server) {
   String json = "{";
   json += "\"updateIntervalMs\": " + String(updateIntervalMs) + ",";
-  json += "\"criticalTempC\": " + String(criticalTempC, 2);
+  json += "\"hotTempC\": " + String(hotTempC, 2) + ",";
+  json += "\"coldTempC\": " + String(coldTempC, 2) + ",";
+  json += "\"runFanTempDiffC\": " + String(runFanTempDiffC, 2);
   json += "}";
 
   server.send(200, "application/json", json);
 }
-
 
 // handles PUT /settings endpoint
 void handlePutSettings(WebServer& server) {
@@ -57,9 +58,19 @@ void handlePutSettings(WebServer& server) {
     response += "interval set to " + String(updateIntervalMs) + "\n";
   }
 
-  if (server.hasArg("criticalTempC")) {
-    criticalTempC = server.arg("criticalTempC").toFloat();
-    response += "criticalTempC set to " + String(criticalTempC, 2) + "\n";
+  if (server.hasArg("hotTempC")) {
+    hotTempC = server.arg("hotTempC").toFloat();
+    response += "hotTempC set to " + String(hotTempC, 2) + "\n";
+  }
+
+  if (server.hasArg("coldTempC")) {
+    coldTempC = server.arg("coldTempC").toFloat();
+    response += "coldTempC set to " + String(coldTempC, 2) + "\n";
+  }
+
+  if (server.hasArg("runFanTempDiffC")) {
+    runFanTempDiffC = server.arg("runFanTempDiffC").toFloat();
+    response += "runFanTempDiffC set to " + String(runFanTempDiffC, 2) + "\n";
   }
 
   if (response == "") {
