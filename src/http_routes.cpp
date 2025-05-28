@@ -1,6 +1,9 @@
 #include <WebServer.h>
-#include "temp_control.h"
+#include "input_control.h"
+#include "output_control.h"
 #include "http_routes.h"
+
+WebServer server(80); // HTTP server on port 80
 
 // registers all HTTP routes
 void registerRoutes(WebServer& server) {
@@ -40,7 +43,8 @@ void handleGetData(WebServer& server) {
 // handles GET /settings endpoint
 void handleGetSettings(WebServer& server) {
   String json = "{";
-  json += "\"updateIntervalMs\": " + String(updateIntervalMs) + ",";
+  json += "\"inputUpdateIntervalMs\": " + String(inputUpdateIntervalMs) + ",";
+  json += "\"outputUpdateIntervalMs\": " + String(outputUpdateIntervalMs) + ",";
   json += "\"hotTempC\": " + String(hotTempC, 2) + ",";
   json += "\"coldTempC\": " + String(coldTempC, 2) + ",";
   json += "\"runFanTempDiffC\": " + String(runFanTempDiffC, 2);
@@ -53,9 +57,14 @@ void handleGetSettings(WebServer& server) {
 void handlePutSettings(WebServer& server) {
   String response = "";
 
-  if (server.hasArg("interval")) {
-    updateIntervalMs = server.arg("interval").toInt();
-    response += "interval set to " + String(updateIntervalMs) + "\n";
+  if (server.hasArg("inputInterval")) {
+    inputUpdateIntervalMs = server.arg("inputInterval").toInt();
+    response += "interval set to " + String(inputUpdateIntervalMs) + "\n";
+  }
+
+  if (server.hasArg("outputInterval")) {
+    inputUpdateIntervalMs = server.arg("interval").toInt();
+    response += "interval set to " + String(outputUpdateIntervalMs) + "\n";
   }
 
   if (server.hasArg("hotTempC")) {
@@ -78,5 +87,12 @@ void handlePutSettings(WebServer& server) {
     server.send(400, "text/plain", response);  // Bad request
   } else {
     server.send(200, "text/plain", response);  // OK
+  }
+}
+
+void httpServerTask(void *pvParameters) {
+  while (true) {
+    server.handleClient();
+    vTaskDelay(10 / portTICK_PERIOD_MS);  // Small delay to yield CPU
   }
 }

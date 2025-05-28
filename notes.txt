@@ -89,14 +89,10 @@ v1.0 added 2 more temp sensors so i can moniter temp at the top of the greenhous
 	deployed outside over night on an existing 12v solar system I had lying around with a buck converter.
 	LEDs now indicated based on the average of the 3 sensors.
 
-TODO: clean up wireing
 TODO: add shades/hoods for temp sensors so they are not affected by direct sunlight
 TODO: add limits on settings ranges
-TODO: break LED controle logic and sensor reading logic into diffrent files
-TODO: rewire and reprogram LEDs so they convay usefull and meaningfull information. 
 TODO: clean up comments
 TODO: switch to freedom units
-TODO: build a front end.
 TODO: update readme
 
 5/22/2025
@@ -107,3 +103,15 @@ v 1.1 added a fan that sho0ld help with tempreture stratification.
 	GET "/data" which returns a json like { "temps_c": { "top": 20.81, "bottom": 7.62, "outside": 10.50 } }
 	GET "/settings" which returns a json like {"updateIntervalMs": 1000,"hotTempC": 25.00,"coldTempC": 10.00,"runFanTempDiffC": 3.00}
 	PUT "/settings" with params like "?interval=2000&hotTempC=26&coldTempC=9&runFanTempDiffC=2"
+
+5/28/2025
+	upgrading to freeRTOS
+	startind using mutex protection for all functions acessing the temp sensor but then decided to just ahve them acess temps via currentTemperaturesC and only let updateTemp query the temp sensors
+
+TODO: add vent hardware and software
+TODO: Add MQTT support for LAN/cloud messaging
+TODO: add alexa/google home controls
+TODO: Build android app
+TODO: build web dashboard
+TODO: add tests, and diagnostics for stack and heap usage
+TODO: add error logging
