@@ -14,6 +14,7 @@ void controlVentByTemp();
 void extendVent();  
 void retractVent();
 void stopVent();
+void ventControlTask(void *pvParameters);
 
 extern float hotTempC;
 extern float coldTempC;

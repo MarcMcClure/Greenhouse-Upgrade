@@ -115,3 +115,14 @@ TODO: Build android app
 TODO: build web dashboard
 TODO: add tests, and diagnostics for stack and heap usage
 TODO: add error logging
+
+5/30/2025
+
+I'm comeing to realize I should have used native ESP-IDF rather than arduino. I want to switch over but first im going to finish the following:
+	set up as comprehensive a set of unit tests as i can without mockup GPIO
+	upgrade my REST API to MQTT
+	build a super basic andriod app
+
+TODO: upgrade from arduino to ESP-IDF
+TODO: abstract hardware from software to make testing easier.
+TODO: add mockup tests for curently untestiable functions (after ESP-IDF upgrade)

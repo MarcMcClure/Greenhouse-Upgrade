@@ -13,6 +13,8 @@
 #include "input_control.h"
 #include "http_routes.h"
 
+#ifndef UNIT_TEST
+
 void setup()
 {
   Serial.begin(9600);
@@ -63,13 +65,22 @@ void setup()
   );
 
   xTaskCreate(
+    ventControlTask,
+    "Vent Control",
+    1024,
+    NULL,
+    1,
+    NULL
+  );
+
+  xTaskCreate(
     httpServerTask,
     "HTTP Server",
     2048,  // Give it room for handling requests
     NULL,
     1,
     NULL
-);
+  );
 }
 
 void loop()
@@ -78,3 +89,5 @@ void loop()
   // This allows the ESP32 to run multiple tasks concurrently.
   vTaskDelay(1000 / portTICK_PERIOD_MS); // Prevent watchdog timer reset
 }
+
+#endif

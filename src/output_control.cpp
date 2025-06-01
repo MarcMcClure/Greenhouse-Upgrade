@@ -5,15 +5,14 @@
 #define LED_BLUE 15
 #define LED_GREEN 0
 #define LED_RED 16
-#define FAN_PIN 19
-#define LINEAR_ACUTUATOR_EXTEND 32
-#define LINEAR_ACUTUATOR_RETRACT 33
-
+#define FAN_PIN 32
+#define LINEAR_ACUTUATOR_EXTEND 26
+#define LINEAR_ACUTUATOR_RETRACT 27
 float hotTempC = 25.0;
-float coldTempC = 10.0;
+float coldTempC = 15.0;
 float runFanTempDiffC = 3.0;
 
-unsigned long outputUpdateIntervalMs = 5000;
+unsigned long outputUpdateIntervalMs = 1000;
 unsigned long lastOutputReadTime = 0;
 
 void ledUpdateTask(void *pvParameters) {
@@ -37,8 +36,7 @@ void setUpFan(){
 void setUpVent(){
   pinMode(LINEAR_ACUTUATOR_EXTEND, OUTPUT);
   pinMode(LINEAR_ACUTUATOR_RETRACT, OUTPUT);
-  digitalWrite(LINEAR_ACUTUATOR_EXTEND, LOW); // Turn off the actuator initially
-  digitalWrite(LINEAR_ACUTUATOR_RETRACT, LOW); // Turn off the actuator initially
+  stopVent(); // Ensure the vent is stopped initially
 }
 
 void printTempToUSB(){
@@ -117,6 +115,13 @@ void fanControlTask(void *pvParameters) {
   }
 }
 
+void ventControlTask(void *pvParameters) {
+  while (true) {
+    controlVentByTemp();
+    vTaskDelay(outputUpdateIntervalMs / portTICK_PERIOD_MS);  // Match other output tasks
+  }
+}
+
 void extendVent() {
   digitalWrite(LINEAR_ACUTUATOR_RETRACT, LOW);  // Prevent short
   digitalWrite(LINEAR_ACUTUATOR_EXTEND, HIGH);
@@ -133,14 +138,14 @@ void stopVent() {
 }
 
 void controlVentByTemp() {
-  // float tempTop = getSensorTempByID(TEMP_SENSOR_ID_TOP);
-  // float tempBottom = getSensorTempByID(TEMP_SENSOR_ID_BOTTOM);
+  float tempTop = getSensorTempByID(TEMP_SENSOR_ID_TOP);
+  float tempBottom = getSensorTempByID(TEMP_SENSOR_ID_BOTTOM);
 
-  // if (tempTop > hotTempC) {
-  //   extendVent();
-  // } else if (tempBottom < coldTempC) {
-  //   retractVent();
-  // } else {
-  //   stopVent();
-  // }
+  if (max(tempTop, tempBottom) > hotTempC) {
+    extendVent();
+  } else if (min(tempTop, tempBottom) < coldTempC) {
+    retractVent();
+  } else {
+    stopVent();
+  }
 }

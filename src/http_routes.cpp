@@ -59,12 +59,12 @@ void handlePutSettings(WebServer& server) {
 
   if (server.hasArg("inputInterval")) {
     inputUpdateIntervalMs = server.arg("inputInterval").toInt();
-    response += "interval set to " + String(inputUpdateIntervalMs) + "\n";
+    response += "input interval set to " + String(inputUpdateIntervalMs) + "\n";
   }
 
   if (server.hasArg("outputInterval")) {
-    inputUpdateIntervalMs = server.arg("interval").toInt();
-    response += "interval set to " + String(outputUpdateIntervalMs) + "\n";
+    outputUpdateIntervalMs = server.arg("outputInterval").toInt();
+    response += "output interval set to " + String(outputUpdateIntervalMs) + "\n";
   }
 
   if (server.hasArg("hotTempC")) {
